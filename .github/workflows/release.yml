@@ -61,23 +61,7 @@ jobs:
           flutter build apk --flavor fdroid -t lib/main_fdroid.dart && flutter build apk --split-per-abi --flavor fdroid -t lib/main_fdroid.dart
           rm ./build/app/outputs/flutter-apk/*.sha1
           ls -l ./build/app/outputs/flutter-apk/
-        
-      - name: Sign APKs
-        env:
-          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
-          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-          PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
-        run: |
-          echo "${KEYSTORE_BASE64}" | base64 -d > apksign.keystore
-          for apk in ./build/app/outputs/flutter-apk/*-release*.apk; do
-            unsignedFn=${apk/-release/-unsigned}
-            mv "$apk" "$unsignedFn"
-            ${ANDROID_HOME}/build-tools/$(ls ${ANDROID_HOME}/build-tools/ | tail -1)/apksigner sign --ks apksign.keystore --ks-pass pass:"${KEYSTORE_PASSWORD}" --out "${apk}" "${unsignedFn}"
-            sha256sum ${apk} | cut -d " " -f 1 > "$apk".sha256
-            gpg --batch  --pinentry-mode loopback --passphrase "${PGP_PASSPHRASE}" --sign --detach-sig "$apk".sha256
-          done
-          rm apksign.keystore
-          PGP_KEY_FINGERPRINT="${{ steps.import_pgp_key.outputs.fingerprint }}"
+      
 
       - name: Create Tag
         uses: mathieudutour/github-tag-action@v6.1

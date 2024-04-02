@@ -17,7 +17,7 @@ class Codeberg extends AppSource {
   @override
   String sourceSpecificStandardizeURL(String url) {
     RegExp standardUrlRegEx = RegExp(
-        '^https?://(www\\.)?${getSourceRegex(hosts)}/[^/]+/[^/]+',
+        '^https?://${getSourceRegex(hosts)}/[^/]+/[^/]+',
         caseSensitive: false);
     RegExpMatch? match = standardUrlRegEx.firstMatch(url);
     if (match == null) {

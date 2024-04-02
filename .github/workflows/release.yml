@@ -24,13 +24,7 @@ jobs:
         id: flutter_doctor
         run: |
           flutter doctor -v
-          
-      - name: Import GPG key
-        id: import_pgp_key
-        uses: crazy-max/ghaction-import-gpg@v6
-        with:
-          gpg_private_key: ${{ secrets.PGP_KEY_BASE64 }}
-          passphrase: ${{ secrets.PGP_PASSPHRASE }}
+  
 
       - name: Check submodule
         id: check_submodule

@@ -57,18 +57,11 @@ jobs:
           ls -l ./build/app/outputs/flutter-apk/
       
 
-      - name: Create Tag
-        uses: mathieudutour/github-tag-action@v6.1
-        with:
-          github_token: ${{ secrets.GH_ACCESS_TOKEN }}
-          custom_tag: "${{ steps.extract_version.outputs.tag }}"
-          tag_prefix: ""
+
+            - name: Upload as Artifact
+              uses: actions/upload-artifact@v3.1.1
+              with:
+                  name: build-output-apk
+                  path: ./build/app/outputs/flutter-apk/*-release*.apk*
       
-      - name: Create Release And Upload APKs
-        uses: ncipollo/release-action@v1
-        with:
-          token: ${{ secrets.GH_ACCESS_TOKEN }}
-          tag: "${{ steps.extract_version.outputs.tag }}"
-          prerelease: "${{ steps.extract_version.outputs.beta }}"
-          artifacts: ./build/app/outputs/flutter-apk/*-release*.apk*
-          generateReleaseNotes: true
+

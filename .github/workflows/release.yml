@@ -52,16 +52,11 @@ jobs:
           sed -i 's/signingConfig signingConfigs.release//g' android/app/build.gradle
           flutter build apk --flavor normal && flutter build apk --split-per-abi --flavor normal
           for file in build/app/outputs/flutter-apk/app-*normal*.apk*; do mv "$file" "${file//-normal/}"; done
-          flutter build apk --flavor fdroid -t lib/main_fdroid.dart && flutter build apk --split-per-abi --flavor fdroid -t lib/main_fdroid.dart
           rm ./build/app/outputs/flutter-apk/*.sha1
           ls -l ./build/app/outputs/flutter-apk/
-      
-
-
-            - name: Upload as Artifact
-              uses: actions/upload-artifact@v3.1.1
-              with:
-                  name: build-output-apk
-                  path: ./build/app/outputs/flutter-apk/*-release*.apk*
-      
-
+          
+      - name: Upload as Artifact
+        uses: actions/upload-artifact@v3.1.1
+        with:
+            name: build-output-apk
+            path: ./build/app/outputs/flutter-apk/*-release*.apk*
